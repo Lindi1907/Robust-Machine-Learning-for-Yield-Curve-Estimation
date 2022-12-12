@@ -1,0 +1,362 @@
+\documentclass[b5paper,twoside]{article}
+
+\usepackage[T1]{fontenc}
+\usepackage{kpfonts}
+
+\usepackage{amsmath,amsthm,amsfonts,amssymb}
+\usepackage{mathrsfs}
+\usepackage[scr=boondoxo]{mathalfa}
+\usepackage{thmtools, thm-restate}
+\usepackage{titling}
+\usepackage{tikz}
+\usepackage{tikz-cd}
+\usepackage{tikzsymbols} 
+\usetikzlibrary{arrows.meta,decorations.pathmorphing,backgrounds,positioning,fit,petri}
+\usepackage{comment}
+\usepackage[newparttoc]{titlesec}
+\usepackage{titletoc}
+\usepackage{indentfirst}
+\usepackage{graphicx}
+\usepackage{float}
+\usepackage{tabulary}
+\usepackage{ifthen}
+\usepackage[nottoc]{tocbibind}
+%\usepackage{hyperref}
+\usepackage[colorlinks=true]{hyperref}
+\hypersetup{linkcolor=red,urlcolor=red,citecolor=green}
+\usepackage{cleveref}
+\usepackage{stmaryrd}
+%\usepackage{xcolor}
+%\usepackage{cancel}
+%\usepackage{anyfontsize}
+%\usepackage{imakeidx}
+%\usepackage{soul}
+%\usepackage{ulem}
+%\setlength\parindent{0pt}
+
+\makeatletter
+\let\newtitle\@title
+\let\newauthor\@author
+\let\newdate\@date
+\makeatother
+
+\usepackage{geometry}
+\geometry{
+	top=0.75in, 
+	bottom=0.75in, 
+	left=0.75in, 
+	right=0.75in, 
+	includehead, 	
+}
+
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\renewcommand\sectionmark[1]{\markboth{\S\,\thesection\enskip#1}{}}
+
+%\renewcommand{\headrulewidth}{0pt}
+\fancyhead{}
+\fancyhead[LE,RO]{\oldstylenums{\thepage}}
+\makeatletter
+\fancyhead[RE]{\newtitle}
+\fancyhead[LO]{\newtitle}
+\makeatother
+\fancyfoot{}
+\setlength{\headsep}{10pt}
+
+
+\titleformat{\section}[block]{\Large\bfseries\scshape}{\S\,\thesection}{.5em}{\filcenter}
+\titleformat{\subsection}[block]{\normalsize\bfseries\scshape}{\S\,\thesubsection}{.5em}{\filright}
+
+\renewcommand\thesection{\oldstylenums{\arabic{section}}}
+\renewcommand\thesubsection{\oldstylenums{\arabic{section}.\arabic{subsection}}}
+
+\renewcommand\contentsname{Table of Contents}
+
+\titlecontents{section}[0pt]{\normalsize\scshape}{\S\,\thecontentslabel\enskip}{}{\titlerule*[8pt]{.}\oldstylenums{\contentspage}}
+\titlecontents{subsection}[12pt]{\small\scshape}{\S\,\thecontentslabel\enskip}{}{\titlerule*[8pt]{.}\contentspage}
+
+
+\newtheoremstyle{akari}{}{}{\itshape}{}{\upshape\bfseries\scshape}{.\;}{ }{\thmnote{#3}}
+\newtheoremstyle{yui}{}{}{}{}{\upshape\bfseries}{.\;}{ }{\thmnumber{(#2) }{\scshape\thmname{#1}}\thmnote{ (#3)}}
+\newtheoremstyle{kyoko}{}{}{\itshape}{}{\upshape\bfseries}{.\;}{ }{\thmnumber{(#2) }{\scshape\thmname{#1}}\thmnote{ (#3)}}
+\newtheoremstyle{kyoko*}{}{}{\itshape}{}{\upshape\bfseries}{.\;}{ }{{\scshape\thmname{#1}}\thmnote{ (#3)}}
+\newtheoremstyle{chinatsu}{}{}{}{}{\upshape\bfseries}{.\;}{ }{{\scshape\thmname{#1}}\thmnumber{ #2}\thmnote{ (#3)}}
+
+\theoremstyle{kyoko}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{apptheorem}{Theorem}[section]
+\renewcommand\thetheorem{\oldstylenums{\arabic{section}.\arabic{theorem}}}
+\renewcommand\theapptheorem{\Alph{section}.\oldstylenums{\arabic{apptheorem}}}
+\newtheorem{proposition}[theorem]{Proposition}
+\newtheorem{appproposition}[apptheorem]{Proposition}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{appcorollary}[apptheorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\newtheorem{applemma}[apptheorem]{Lemma}
+\newtheorem{conjecture}[theorem]{Conjecture}
+\newtheorem{appconjecture}[apptheorem]{Conjecture}
+
+\theoremstyle{kyoko*}
+\newtheorem*{theorem*}{Theorem}
+\newtheorem*{proposition*}{Proposition}
+\newtheorem*{lemma*}{Lemma}
+
+\theoremstyle{yui}
+\newtheorem{definition}[theorem]{Definition}
+\newtheorem{appdefinition}[apptheorem]{Definition}
+\newtheorem{notation}[theorem]{Notation}
+\newtheorem{example}[theorem]{Example}
+\newtheorem{appexample}[apptheorem]{Example}
+\newtheorem{situation}[theorem]{Situation}
+\newtheorem{remark}[theorem]{Remark}
+\newtheorem{appremark}[apptheorem]{Remark}
+
+\theoremstyle{chinatsu}
+\newtheorem{exercise}{Exercise}
+\renewcommand\theexercise{\oldstylenums{\arabic{exercise}}}
+
+\theoremstyle{akari}
+\newtheorem*{akari}{}
+
+\renewcommand{\theenumi}{\oldstylenums{\arabic{enumi}}}
+\renewcommand{\labelenumi}{(\theenumi)}
+
+\renewcommand{\theenumii}{\alph{enumii}}
+\renewcommand{\labelenumii}{(\theenumii)}
+
+\renewcommand{\theenumiii}{\roman{enumiii}}
+\renewcommand{\labelenumiii}{(\theenumiii)}
+
+\renewcommand*{\proofname}{\upshape\scshape\bfseries Proof}
+\renewcommand{\qedsymbol}{$\blacksquare$}
+
+%\renewcommand\bibname{BIBLIOGRAPHY}
+
+\tikzcdset{
+    row sep/normal=3.6em,
+    column sep/normal=3.6em,
+    arrows=semithick,
+    arrow style=tikz,
+    diagrams={>={Stealth[round]}}
+}
+
+\tikzset{
+    pre/.style={<-,shorten <=1pt,>={Stealth[round]},semithick},
+    post/.style={->,shorten >=1pt,>={Stealth[round]},semithick}
+}
+
+\newcommand{\BA}{\mathbf A}
+\newcommand{\BC}{\mathbf C}
+\newcommand{\BD}{\mathbf D}
+\newcommand{\BE}{\mathbf E}
+\newcommand{\BF}{\mathbf F}
+\newcommand{\BG}{\mathbf G}
+\newcommand{\BH}{\mathbf H}
+\newcommand{\BI}{\mathbf I}
+\newcommand{\BJ}{\mathbf J}
+\newcommand{\BK}{\mathbf K}
+\newcommand{\BL}{\mathbf L}
+\newcommand{\BM}{\mathbf M}
+\newcommand{\BN}{\mathbf N}
+\newcommand{\BO}{\mathbf O}
+\newcommand{\BP}{\mathbf P}
+\newcommand{\BQ}{\mathbf Q}
+\newcommand{\BR}{\mathbf R}
+\newcommand{\BS}{\mathbf S}
+\newcommand{\BT}{\mathbf T}
+\newcommand{\BU}{\mathbf U}
+\newcommand{\BV}{\mathbf V}
+\newcommand{\BW}{\mathbf W}
+\newcommand{\BX}{\mathbf X}
+\newcommand{\BY}{\mathbf Y}
+\newcommand{\BZ}{\mathbf Z}
+ 
+\newcommand{\CC}{\mathbb C}
+\newcommand{\FF}{\mathbb F}
+\newcommand{\GG}{\mathbb G}
+\newcommand{\NN}{\mathbb N}
+\newcommand{\PP}{\mathbb P}
+\newcommand{\QQ}{\mathbb Q}
+\newcommand{\RR}{\mathbb R}
+\newcommand{\ZZ}{\mathbb Z}
+
+\newcommand{\SA}{\mathcal A}
+\newcommand{\SB}{\mathcal B}
+\newcommand{\SC}{\mathcal C}
+\newcommand{\SD}{\mathcal D}
+\newcommand{\SE}{\mathcal E}
+\newcommand{\SF}{\mathcal F}
+\newcommand{\SG}{\mathcal G}
+\newcommand{\SH}{\mathcal H}
+\newcommand{\SI}{\mathcal I}
+\newcommand{\SJ}{\mathcal J}
+\newcommand{\SK}{\mathcal K}
+\newcommand{\SL}{\mathcal L}
+\newcommand{\SM}{\mathcal M}
+\newcommand{\SN}{\mathcal N}
+\newcommand{\SO}{\mathcal O}
+\newcommand{\SP}{\mathcal P}
+\newcommand{\SQ}{\mathcal Q}
+\newcommand{\SR}{\mathcal R}
+\newcommand{\ST}{\mathcal T}
+\newcommand{\SU}{\mathcal U}
+\newcommand{\SV}{\mathcal V}
+\newcommand{\SW}{\mathcal W}
+\newcommand{\SX}{\mathcal X}
+\newcommand{\SY}{\mathcal Y}
+\newcommand{\SZ}{\mathcal Z}
+
+\newcommand\SCA{\mathscr A}
+\newcommand\SCB{\mathscr B}
+\newcommand\SCC{\mathscr C}
+\newcommand\SCD{\mathscr D}
+\newcommand\SCE{\mathscr E}
+\newcommand\SCF{\mathscr F}
+\newcommand\SCG{\mathscr G}
+\newcommand\SCH{\mathscr H}
+\newcommand\SCI{\mathscr I}
+\newcommand\SCJ{\mathscr J}
+\newcommand\SCK{\mathscr K}
+\newcommand\SCL{\mathscr L}
+\newcommand\SCM{\mathscr M}
+\newcommand\SCN{\mathscr N}
+\newcommand\SCO{\mathscr O}
+\newcommand\SCP{\mathscr P}
+\newcommand\SCQ{\mathscr Q}
+\newcommand\SCR{\mathscr R}
+\newcommand\SCS{\mathscr S}
+\newcommand\SCT{\mathscr T}
+\newcommand\SCU{\mathscr U}
+\newcommand\SCV{\mathscr V}
+\newcommand\SCW{\mathscr W}
+\newcommand\SCX{\mathscr X}
+\newcommand\SCY{\mathscr Y}
+\newcommand\SCZ{\mathscr Z}
+
+\newcommand{\kA}{\mathfrak A}
+\newcommand{\kB}{\mathfrak B}
+\newcommand{\kC}{\mathfrak C}
+\newcommand{\kD}{\mathfrak D}
+\newcommand{\kE}{\mathfrak E}
+\newcommand{\kF}{\mathfrak F}
+\newcommand{\kG}{\mathfrak G}
+\newcommand{\kH}{\mathfrak H}
+\newcommand{\kI}{\mathfrak I}
+\newcommand{\kJ}{\mathfrak J}
+\newcommand{\kK}{\mathfrak K}
+\newcommand{\kL}{\mathfrak L}
+\newcommand{\kM}{\mathfrak M}
+\newcommand{\kN}{\mathfrak N}
+\newcommand{\kO}{\mathfrak O}
+\newcommand{\kP}{\mathfrak P}
+\newcommand{\kQ}{\mathfrak Q}
+\newcommand{\kR}{\mathfrak R}
+\newcommand{\kS}{\mathfrak S}
+\newcommand{\kT}{\mathfrak T}
+\newcommand{\kU}{\mathfrak U}
+\newcommand{\kV}{\mathfrak V}
+\newcommand{\kW}{\mathfrak W}
+\newcommand{\kX}{\mathfrak X}
+\newcommand{\kY}{\mathfrak Y}
+\newcommand{\kZ}{\mathfrak Z}
+\newcommand{\ka}{\mathfrak a}
+\newcommand{\kb}{\mathfrak b}
+\newcommand{\kc}{\mathfrak c}
+\newcommand{\kd}{\mathfrak d}
+\newcommand{\ke}{\mathfrak e}
+\newcommand{\kf}{\mathfrak f}
+\newcommand{\kg}{\mathfrak g}
+\newcommand{\kh}{\mathfrak h}
+\newcommand{\ki}{\mathfrak i}
+\newcommand{\kj}{\mathfrak j}
+\newcommand{\kk}{\mathfrak k}
+\newcommand{\kl}{\mathfrak l}
+\newcommand{\km}{\mathfrak m}
+\newcommand{\kn}{\mathfrak n}
+\newcommand{\ko}{\mathfrak o}
+\newcommand{\kp}{\mathfrak p}
+\newcommand{\kq}{\mathfrak q}
+\newcommand{\kr}{\mathfrak r}
+\newcommand{\ks}{\mathfrak s}
+\newcommand{\kt}{\mathfrak t}
+\newcommand{\ku}{\mathfrak u}
+\newcommand{\kv}{\mathfrak v}
+\newcommand{\kw}{\mathfrak w}
+\newcommand{\kx}{\mathfrak x}
+\newcommand{\ky}{\mathfrak y}
+\newcommand{\kz}{\mathfrak z}
+
+\newcommand\FA{\mathsf A}
+\newcommand\FB{\mathsf B}
+\newcommand\FC{\mathsf C}
+\newcommand\FD{\mathsf D}
+\newcommand\FE{\mathsf E}
+%\newcommand\FF{\mathsf F}
+\newcommand\FG{\mathsf G}
+\newcommand\FH{\mathsf H}
+\newcommand\FI{\mathsf I}
+\newcommand\FJ{\mathsf J}
+\newcommand\FK{\mathsf K}
+\newcommand\FL{\mathsf L}
+\newcommand\FM{\mathsf M}
+\newcommand\FN{\mathsf N}
+\newcommand\FO{\mathsf O}
+\newcommand\FP{\mathsf P}
+\newcommand\FQ{\mathsf Q}
+\newcommand\FR{\mathsf R}
+\newcommand\FS{\mathsf S}
+\newcommand\FT{\mathsf T}
+\newcommand\FU{\mathsf U}
+\newcommand\FV{\mathsf V}
+\newcommand\FW{\mathsf W}
+\newcommand\FX{\mathsf X}
+\newcommand\FY{\mathsf Y}
+\newcommand\FZ{\mathsf Z}
+
+\newcommand\rA{\mathrm A}
+\newcommand\rB{\mathrm B}
+\newcommand\rC{\mathrm C}
+\newcommand\rE{\mathrm E}
+\newcommand\rG{\mathrm G}
+\newcommand\rH{\mathrm H}
+\newcommand\rK{\mathrm K}
+\newcommand\rL{\mathrm L}
+\newcommand\rM{\mathrm M}
+\newcommand\rN{\mathrm N}
+\newcommand\rP{\mathrm P}
+\newcommand\rR{\mathrm R}
+\newcommand\rT{\mathrm T}
+\newcommand\rZ{\mathrm Z}
+\newcommand\rb{\mathrm b}
+\newcommand\rc{\mathrm c}
+\newcommand\rh{\mathrm h}
+
+\newcommand{\comma}{,}
+
+\title{\scshape Assignment \oldstylenums{1} - MVP's}
+\author{
+    \scshape Lindi Li \\ \oldstylenums{3460570} \and
+    \scshape Gewei Cao \\ \oldstylenums{3461232}
+}
+\date{December \oldstylenums{2022}}
+
+
+\begin{document}
+
+\maketitle
+
+\include{Intrudction}
+
+\include{RKHS}
+
+\include{Bayies}
+
+\include{Empirical_study}
+
+\end{document}
+
+
+
+
+
+
