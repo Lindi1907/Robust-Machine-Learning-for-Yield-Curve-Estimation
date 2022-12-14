@@ -61,8 +61,7 @@
 \fancyhead[LO]{\newtitle}
 \makeatother
 \fancyfoot{}
-\setlength{\headsep}{10pt}
-
+\setlength{\parindent}{0pt}
 
 \titleformat{\section}[block]{\Large\bfseries\scshape}{\S\,\thesection}{.5em}{\filcenter}
 \titleformat{\subsection}[block]{\normalsize\bfseries\scshape}{\S\,\thesubsection}{.5em}{\filright}
@@ -145,193 +144,20 @@
     post/.style={->,shorten >=1pt,>={Stealth[round]},semithick}
 }
 
-\newcommand{\BA}{\mathbf A}
-\newcommand{\BC}{\mathbf C}
-\newcommand{\BD}{\mathbf D}
-\newcommand{\BE}{\mathbf E}
-\newcommand{\BF}{\mathbf F}
-\newcommand{\BG}{\mathbf G}
-\newcommand{\BH}{\mathbf H}
-\newcommand{\BI}{\mathbf I}
-\newcommand{\BJ}{\mathbf J}
-\newcommand{\BK}{\mathbf K}
-\newcommand{\BL}{\mathbf L}
-\newcommand{\BM}{\mathbf M}
-\newcommand{\BN}{\mathbf N}
-\newcommand{\BO}{\mathbf O}
-\newcommand{\BP}{\mathbf P}
-\newcommand{\BQ}{\mathbf Q}
-\newcommand{\BR}{\mathbf R}
-\newcommand{\BS}{\mathbf S}
-\newcommand{\BT}{\mathbf T}
-\newcommand{\BU}{\mathbf U}
-\newcommand{\BV}{\mathbf V}
-\newcommand{\BW}{\mathbf W}
-\newcommand{\BX}{\mathbf X}
-\newcommand{\BY}{\mathbf Y}
-\newcommand{\BZ}{\mathbf Z}
- 
-\newcommand{\CC}{\mathbb C}
-\newcommand{\FF}{\mathbb F}
-\newcommand{\GG}{\mathbb G}
-\newcommand{\NN}{\mathbb N}
-\newcommand{\PP}{\mathbb P}
-\newcommand{\QQ}{\mathbb Q}
-\newcommand{\RR}{\mathbb R}
-\newcommand{\ZZ}{\mathbb Z}
 
-\newcommand{\SA}{\mathcal A}
-\newcommand{\SB}{\mathcal B}
-\newcommand{\SC}{\mathcal C}
-\newcommand{\SD}{\mathcal D}
-\newcommand{\SE}{\mathcal E}
-\newcommand{\SF}{\mathcal F}
-\newcommand{\SG}{\mathcal G}
-\newcommand{\SH}{\mathcal H}
-\newcommand{\SI}{\mathcal I}
-\newcommand{\SJ}{\mathcal J}
-\newcommand{\SK}{\mathcal K}
-\newcommand{\SL}{\mathcal L}
-\newcommand{\SM}{\mathcal M}
-\newcommand{\SN}{\mathcal N}
-\newcommand{\SO}{\mathcal O}
-\newcommand{\SP}{\mathcal P}
-\newcommand{\SQ}{\mathcal Q}
-\newcommand{\SR}{\mathcal R}
-\newcommand{\ST}{\mathcal T}
-\newcommand{\SU}{\mathcal U}
-\newcommand{\SV}{\mathcal V}
-\newcommand{\SW}{\mathcal W}
-\newcommand{\SX}{\mathcal X}
-\newcommand{\SY}{\mathcal Y}
-\newcommand{\SZ}{\mathcal Z}
 
-\newcommand\SCA{\mathscr A}
-\newcommand\SCB{\mathscr B}
-\newcommand\SCC{\mathscr C}
-\newcommand\SCD{\mathscr D}
-\newcommand\SCE{\mathscr E}
-\newcommand\SCF{\mathscr F}
-\newcommand\SCG{\mathscr G}
-\newcommand\SCH{\mathscr H}
-\newcommand\SCI{\mathscr I}
-\newcommand\SCJ{\mathscr J}
-\newcommand\SCK{\mathscr K}
-\newcommand\SCL{\mathscr L}
-\newcommand\SCM{\mathscr M}
-\newcommand\SCN{\mathscr N}
-\newcommand\SCO{\mathscr O}
-\newcommand\SCP{\mathscr P}
-\newcommand\SCQ{\mathscr Q}
-\newcommand\SCR{\mathscr R}
-\newcommand\SCS{\mathscr S}
-\newcommand\SCT{\mathscr T}
-\newcommand\SCU{\mathscr U}
-\newcommand\SCV{\mathscr V}
-\newcommand\SCW{\mathscr W}
-\newcommand\SCX{\mathscr X}
-\newcommand\SCY{\mathscr Y}
-\newcommand\SCZ{\mathscr Z}
+\tikzcdset{
+    row sep/normal=3.6em,
+    column sep/normal=3.6em,
+    arrows=semithick,
+    arrow style=tikz,
+    diagrams={>={Stealth[round]}}
+}
 
-\newcommand{\kA}{\mathfrak A}
-\newcommand{\kB}{\mathfrak B}
-\newcommand{\kC}{\mathfrak C}
-\newcommand{\kD}{\mathfrak D}
-\newcommand{\kE}{\mathfrak E}
-\newcommand{\kF}{\mathfrak F}
-\newcommand{\kG}{\mathfrak G}
-\newcommand{\kH}{\mathfrak H}
-\newcommand{\kI}{\mathfrak I}
-\newcommand{\kJ}{\mathfrak J}
-\newcommand{\kK}{\mathfrak K}
-\newcommand{\kL}{\mathfrak L}
-\newcommand{\kM}{\mathfrak M}
-\newcommand{\kN}{\mathfrak N}
-\newcommand{\kO}{\mathfrak O}
-\newcommand{\kP}{\mathfrak P}
-\newcommand{\kQ}{\mathfrak Q}
-\newcommand{\kR}{\mathfrak R}
-\newcommand{\kS}{\mathfrak S}
-\newcommand{\kT}{\mathfrak T}
-\newcommand{\kU}{\mathfrak U}
-\newcommand{\kV}{\mathfrak V}
-\newcommand{\kW}{\mathfrak W}
-\newcommand{\kX}{\mathfrak X}
-\newcommand{\kY}{\mathfrak Y}
-\newcommand{\kZ}{\mathfrak Z}
-\newcommand{\ka}{\mathfrak a}
-\newcommand{\kb}{\mathfrak b}
-\newcommand{\kc}{\mathfrak c}
-\newcommand{\kd}{\mathfrak d}
-\newcommand{\ke}{\mathfrak e}
-\newcommand{\kf}{\mathfrak f}
-\newcommand{\kg}{\mathfrak g}
-\newcommand{\kh}{\mathfrak h}
-\newcommand{\ki}{\mathfrak i}
-\newcommand{\kj}{\mathfrak j}
-\newcommand{\kk}{\mathfrak k}
-\newcommand{\kl}{\mathfrak l}
-\newcommand{\km}{\mathfrak m}
-\newcommand{\kn}{\mathfrak n}
-\newcommand{\ko}{\mathfrak o}
-\newcommand{\kp}{\mathfrak p}
-\newcommand{\kq}{\mathfrak q}
-\newcommand{\kr}{\mathfrak r}
-\newcommand{\ks}{\mathfrak s}
-\newcommand{\kt}{\mathfrak t}
-\newcommand{\ku}{\mathfrak u}
-\newcommand{\kv}{\mathfrak v}
-\newcommand{\kw}{\mathfrak w}
-\newcommand{\kx}{\mathfrak x}
-\newcommand{\ky}{\mathfrak y}
-\newcommand{\kz}{\mathfrak z}
-
-\newcommand\FA{\mathsf A}
-\newcommand\FB{\mathsf B}
-\newcommand\FC{\mathsf C}
-\newcommand\FD{\mathsf D}
-\newcommand\FE{\mathsf E}
-%\newcommand\FF{\mathsf F}
-\newcommand\FG{\mathsf G}
-\newcommand\FH{\mathsf H}
-\newcommand\FI{\mathsf I}
-\newcommand\FJ{\mathsf J}
-\newcommand\FK{\mathsf K}
-\newcommand\FL{\mathsf L}
-\newcommand\FM{\mathsf M}
-\newcommand\FN{\mathsf N}
-\newcommand\FO{\mathsf O}
-\newcommand\FP{\mathsf P}
-\newcommand\FQ{\mathsf Q}
-\newcommand\FR{\mathsf R}
-\newcommand\FS{\mathsf S}
-\newcommand\FT{\mathsf T}
-\newcommand\FU{\mathsf U}
-\newcommand\FV{\mathsf V}
-\newcommand\FW{\mathsf W}
-\newcommand\FX{\mathsf X}
-\newcommand\FY{\mathsf Y}
-\newcommand\FZ{\mathsf Z}
-
-\newcommand\rA{\mathrm A}
-\newcommand\rB{\mathrm B}
-\newcommand\rC{\mathrm C}
-\newcommand\rE{\mathrm E}
-\newcommand\rG{\mathrm G}
-\newcommand\rH{\mathrm H}
-\newcommand\rK{\mathrm K}
-\newcommand\rL{\mathrm L}
-\newcommand\rM{\mathrm M}
-\newcommand\rN{\mathrm N}
-\newcommand\rP{\mathrm P}
-\newcommand\rR{\mathrm R}
-\newcommand\rT{\mathrm T}
-\newcommand\rZ{\mathrm Z}
-\newcommand\rb{\mathrm b}
-\newcommand\rc{\mathrm c}
-\newcommand\rh{\mathrm h}
-
-\newcommand{\comma}{,}
+\tikzset{
+    pre/.style={<-,shorten <=1pt,>={Stealth[round]},semithick},
+    post/.style={->,shorten >=1pt,>={Stealth[round]},semithick}
+}
 
 \title{\scshape Assignment \oldstylenums{1} - MVP's}
 \author{
