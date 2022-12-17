@@ -22,7 +22,7 @@ An example of a defined norm in Hilbert space (i.e, the space $L_2$ of square in
 The motivation of kernel method is simple. Imagine there are some blue dots and red dots on a vector space $\mathbb{R}^n$ and 
 we want to separate them by color. As it shows in the left hand side figure, it is difficult to divide them through a straight 
 line. However, we may be able to separate them easily by mapping each dot into a high-dimension feature space. The figure below 
-shows how mapping works:
+shows how feature map works:
 \begin{figure}[H]
     \centering
     \includegraphics[width=0.7\textwidth]{Mapping}
@@ -40,15 +40,8 @@ Tow functions $\phi(x)$ and $\phi(y)$ are defined as:
         y_1y_1&y_1y_2&y_2y_1&y_2y_2
     \end{bmatrix}
 \end{equation*}
-We now successfully mapping them into a four-dimension feature space. Therefore, instead of computing the inner product of $<\phi(x),\phi(y)>$, we can define 
-a corresponding kernel function $K(\textbf{x},\textbf{y})=<\textbf{x},\textbf{y}>^2$. It can be easily proofed that $K(\textbf{x},\textbf{y})$ is the same as $<\phi(\textbf{x}),\phi(\textbf{y})>$:
-\begin{align*}
-    K(\textbf{x},\textbf{y})&=<\textbf{x},\textbf{y}>^2\\
-                            &=(x_1y_1+x_2y_2)^2\\
-                            &=x_1^2y_1^2+2x_1y_2x_2y_1+x_2^2y_2^2\\
-                            &=<\phi(\textbf{x}),\phi(\textbf{y})>
-\end{align*}
-To write the above example in a general form, we first set an equation where $\phi(\cdot)\in\mathbb{R}^m$ and $\phi(x)$ is defined as the mapping function:
+We now successfully mapping them into a four-dimension feature space. 
+To write the above example in a general form, we first set an equation where $\phi(\cdot)\in\mathbb{R}^m$ and $\phi(x)$ is defined as the mapping function. Note that we assume there is a linear relation between $y$ and $\phi(x)$:
 \begin{align}
     y&=\phi(x)^\top w \notag\\
      &= \begin{bmatrix}
@@ -76,30 +69,34 @@ $Y$ and $\Phi$ in generalization is defined by:
            \phi_1(x_n)&\cdots&\phi_m(x_n)
           \end{bmatrix}
 \end{align}
+Ridge
 In most of the cases, we want to avoid computing $\phi(x)$ in a explicit way, especially when $m$ is very large. Therefore, we define a kernel function:
 \begin{equation}
     [\Phi\Phi^(top)]_{i,j}=\phi(x_i)^(top) \phi(x_j)=K(x_i,x_j)
 \end{equation}
-$\phi(x_i)^top\phi(x_j)$ is usually very difficult to compute, and thus we use $\mathbb{K}(x_i,x_j)$ to replace.
+$\phi(x_i)^top\phi(x_j)$ is usually very difficult to compute, and thus we use $\mathbb{K}(x_i,x_j)$ to replace. \\
 
-In the simplest form of machine learning, in order to predict $x$, the algorithm collects the samples in the training set $\chi$ that are similar to $x$, 
-and then take the weighted value of these samples as the predict value of $x$. Here comes the questions:
-\begin{itemize}
-    \item How to measure the similarity between samples?
-    \item How to weight the value of each sample?
-\end{itemize} 
-In general, the higher the similarity of the sample to our point of interest $x$, the more the sampling weights. To evaluate the similarity between two observations, 
-a kernel is defined as a function of two input patterns $k(x_i, x_j)$, mapping onto a real-valued output. For example, the Gaussian kernel is
+For example, the Gaussian kernel is
 \begin{equation}
-    k(x_i, x_j) = e^\frac{\parallel x_i - x_j \parallel}{\sigma^2},
+    k(x_i, x_j) = e^\frac{-\parallel x_i - x_j \parallel}{\sigma^2},
 \end{equation}
-where $\parallel x_i - x_j \parallel$ is the Euclidean distance between $x_i$ and $x_j$, and $\sigma^2 \in \mathbb{R}^+$ is the bandwidth of the kernel function.\\
-We now define that $k: \chi \times \chi \rightarrow \mathbb{R}$ is a kernel if
+(Gaussian kernel meaning the similarity between two points)where $\parallel x_i - x_j \parallel$ is the Euclidean distance between $x_i$ and $x_j$, and $\sigma^2 \in \mathbb{R}^+$ is the bandwidth of the kernel function, and it satisfies the 
+following properties:\\
+for $k: \chi \times \chi \rightarrow \mathbb{R}$ is a kernel if
 \begin{itemize}
     \item $k$ is symmetric: $k(x,y) = k(y,x)$.
     \item $k$ is positive semi-definite, meaning that $\sum_{i} \sum_{j} \alpha_i \alpha_j k(x_i,x_j)\geq0, \forall \alpha_i, \alpha_j \in \mathbb{R}, x \in \mathbb{R}^\mathbb{D}, D \in \mathbb{Z}^+$. 
     \item We define the corresponding kernel matrix as the matrix $K$ with entries $k_{ij}=k(x_i,x_j)$, the sencond property of $k$ is equivalent to saying that $c'Kc \geq0$.
 \end{itemize}
+Recall the simple example above, instead of computing the inner product of $<\phi(x),\phi(y)>$, we can define 
+a corresponding kernel function $K(\textbf{x},\textbf{y})=<\textbf{x},\textbf{y}>^2$. It can be easily proofed that $K(\textbf{x},\textbf{y})$ is the same as $<\phi(\textbf{x}),\phi(\textbf{y})>$:
+\begin{align*}
+    K(\textbf{x},\textbf{y})&=<\textbf{x},\textbf{y}>^2\\
+                            &=(x_1y_1+x_2y_2)^2\\
+                            &=x_1^2y_1^2+2x_1y_2x_2y_1+x_2^2y_2^2\\
+                            &=<\phi(\textbf{x}),\phi(\textbf{y})>
+\end{align*}
+(representer theorem)
 From the similarity-based point of view, the use of kernels for regression can be described in two stages. We set $y_i \in \mathbb{R}$ as dependent variable, 
 and $x_i$ as a $1 \times D$ vector $x_i \in \mathbb{R}^D$ of covariate values. Assume that $(y_i, x_i)$ where $i = 1, \dots, N$ is i.i.d. We first define a target function $y=f(x)$ and assume that in a space of functions, there exists 
 a function that can estimate $y=f(x)$ well. The target function could be represented by
