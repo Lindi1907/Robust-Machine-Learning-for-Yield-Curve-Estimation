@@ -1,2 +1,51 @@
-\section{Bayies}
-blabla
+\section{Gaussian Process and Bayesian Perspective}
+\subsection{Definition}
+We have data $\textbf{D} = \{ (\boldsymbol{x_i}, y_i) \} _{i=1} ^{M}$, and assume that mean of y is 0. 
+\\ \\
+Task: find the distribution of $ f^{*}(x) $.  
+\\ \\
+Assume that the true form of prediction function is: $y_i = f(\boldsymbol{x_i}) + \epsilon_i$ and $\epsilon_i \sim \mathcal{N}(0,\sigma_{i}^{2})$. Here we have a M dimensional dependent variable \textbf{y}, and a $M \times N$ dimensional independent variable \textbf{X}, where M is the number of observations, and N is the dimension of x, i.e. $\boldsymbol{x_i}\in \mathbb{R}^N $. The function 
+$f(\boldsymbol{x_i}) : \mathbb{R}^N \to \mathbb{R}$ takes vector $\boldsymbol{x_i} \in \mathbb{R}^N$. Let $\boldsymbol{K}_{X, X} = k(\boldsymbol{x},\boldsymbol{x}^T)$ which is the matrix of $k(\boldsymbol{x_i}, \boldsymbol{x_j})$. Thus, \textbf{K} is a $M \times M$ matrix. 
+\\ \\
+The assumption of Gaussian Process is as following: \\ \\
+For a given vector \textbf{y}, and its corresponding data \textbf{X}, where vector $ \boldsymbol{y} \in \mathbb{R}^M$ and $\boldsymbol{X}$ is $M \times N$ matrix. In addition, for \textbf{y} and \textbf{X} data, the error term $\epsilon \sim \mathcal{N}(\boldsymbol{0},\varSigma^{\epsilon})$, and $\varSigma^{\epsilon} = diag(\sigma_{1}^{2}, \sigma_{2}^{2}, \sigma_{3}^{2}, ......, \sigma_{M}^{2}) $.  Meanwhile we have arbitrary $n \times N$ matrix \textbf{Z} and predicted value $f^{*}(\boldsymbol{z}) \in \mathbb{R}^n$, where $ \boldsymbol{z} = (\boldsymbol{z_1, z_2, z_3, ......, z_n})^T$. \\ \\
+Then we assume \textbf{y} and $f^{*}(\boldsymbol{z})$ follow a $(M + n)$ multivariate normal distribution(MVN): \\
+\begin{equation}
+\begin{bmatrix}
+f^{*}(\boldsymbol{z}) \\
+\boldsymbol{y} 
+\end{bmatrix} \sim \mathcal{N}
+\begin{pmatrix}
+\begin{bmatrix}
+\mu_{f^{*}(\boldsymbol{z})} \\ \mu_{\boldsymbol{y}}
+\end{bmatrix} 
+ & ,\begin{bmatrix}
+\boldsymbol{K}_{Z, Z} & \boldsymbol{K}_{Z, X} \\
+\boldsymbol{K}_{X, Z} & \hat{\boldsymbol{K}}_{X, X}
+\end{bmatrix}
+\end{pmatrix}
+\end{equation}
+where $ \hat{\boldsymbol{K}}_{X, X} = \boldsymbol{K}_{X, X} + \varSigma^{\epsilon}$. \\ \\
+Then given data \textbf{y}, \textbf{X} and \textbf{Z}, according to the conditional distributions of the multivariate normal distribution\footnote{https://statproofbook.github.io/P/mvn-cond}, we have the posterior distribution 
+\begin{equation}
+ f^{*}(\boldsymbol{z}) | \boldsymbol{y}, \boldsymbol{X},  \boldsymbol{Z} \sim  \mathcal{N}(\mu_{f^{*}(\boldsymbol{z})} + \boldsymbol{K}_{Z, X}\hat{\boldsymbol{K}}_{X, X}^{-1}(\boldsymbol{y} - \mu_{\boldsymbol{y}}), \boldsymbol{K}_{Z, Z} - \boldsymbol{K}_{Z, X}\hat{\boldsymbol{K}}_{X, X}^{-1}\boldsymbol{K}_{X, Z})
+\end{equation}
+
+\subsection{Intuition behind Gaussian Process}
+The idea behind this process is that, assume our interested function is $f(x)$, $ f(\boldsymbol{x}): \mathbb{R}^N \to \mathbb{R}$, and we have an arbitorary vector of independent variable $\boldsymbol{x} = (\boldsymbol{x_1}, \boldsymbol{x_2,} ......, \boldsymbol{x_M})^T$, and for each $\boldsymbol{x_i}, i = 1, 2, ...,M, x_i \in \mathbb{R}^N$, then we can obtain a series of $f(\boldsymbol{x})= (f(\boldsymbol{x_1}), f(\boldsymbol{x_2}), f(\boldsymbol{x_3}), ......, f(\boldsymbol{x_M}) )^T$. We assume that the series of f(\textbf{x}) follows a multivariate normal distribution which is: 
+
+\begin{equation}
+f(\boldsymbol{x}) \sim \mathcal{N}(\mu(\boldsymbol{x}), k(\boldsymbol{x},\boldsymbol{x}^T)) 
+\end{equation}
+\\ 
+This is the prior distribution of our function $f(x)$, here we have a set of infinitely functions that follow this distribution, their mean is the function $\mu(\boldsymbol{x_i})$, and the variance of them is $k(\boldsymbol{x_i},\boldsymbol{x_i}^T)$. This makes the distribution of $f(\boldsymbol{x})$ to be called Gaussian Process (GP). Note that if we add a noise term $\epsilon \sim \mathcal{N}(\boldsymbol{0},\varSigma^{\epsilon})$, then our prior distribution of $y = f(\boldsymbol{x}) + \epsilon \sim \mathcal{N}(\mu(\boldsymbol{x}), k(\boldsymbol{x},\boldsymbol{x}^T) + \varSigma^{\epsilon})$ is also a Gaussian Process. Here we use kernel matrix to denote variance-covariance matrix because kernel value represents how near two data points in the space are, with this property we can obtain a smooth function.  \\ \\
+Remind that our goal is to estimate the distribution of $f(\boldsymbol{x^*})$ given observed training data set $D = \{\boldsymbol{x_i}, y_i\}_{i = 1}^M$ and test data set $\{\boldsymbol{x_j^*}\}_{j = 1}^n$. Firstly we compare our nonparametric case to a parametric case. In a parametric case, assume the parameter $\theta$ determines the form of $f_{\theta}(\cdot)$, according to the Bayesian rule, 
+$
+p(\boldsymbol{y^*} | \boldsymbol{x^*}, \boldsymbol{x}, \boldsymbol{y}) = \int_{\theta} p(\boldsymbol{y^*}, \theta |  \boldsymbol{x^*}, \boldsymbol{x}, \boldsymbol{y})d\theta = \int_{\theta} p(\boldsymbol{y^*} | \theta, \boldsymbol{x^*})p(\theta | \boldsymbol{x}, \boldsymbol{y})d\theta
+$
+, where $\boldsymbol{y^*}$ is the prediction of given data $\boldsymbol{x^*}$, and its form of model is determmined by paramater $\theta$. Estimated $\theta$ value is determined by training data $D$. This is to say that we update our parameter $\theta$ by given $D$, and use $p(\theta | \boldsymbol{x}, \boldsymbol{y})$ as a new prior probability, and based on this to predict posterior of $\boldsymbol{y^*}$.  \\ \\
+Therefore, back to our GP nonparametric case, $\theta$ could be substituted by function $f(\cdot)$. One can show that the joint distribution of $(f(\boldsymbol{x^*}), \boldsymbol{y})^T$ follows a multivariate normal distribution as in the definition before, because of the assumption of GP and the property of MVN. With the joint distribution, we want to find posterior probability:  $p(f(\boldsymbol{x^*}) | \boldsymbol{x^*}, \boldsymbol{x}, \boldsymbol{y}) = \int p(f(\boldsymbol{x^*}) | f, \boldsymbol{x^*})p(f | \boldsymbol{x}, \boldsymbol{y})df$, where $p(f | \boldsymbol{x}, \boldsymbol{y})$ is the posterior of $f(\cdot)$ given $D$, and is regarded as prior when estimating $p(f(\boldsymbol{x^*}) | \boldsymbol{x^*}, D)$, this process is called Bayesian updating. Fortunately, we do not need to take any integral in GP, becaus the posterior of $f(\boldsymbol{x^*})$ could be calculated by formula of conditional distributioin in MVN as mentioned in former section. 
+
+\subsection{Gaussian Process in research paper}
+In our object paper, for given price data P, 
+
