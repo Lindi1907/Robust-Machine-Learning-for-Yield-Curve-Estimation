@@ -196,3 +196,23 @@ By differentiation and setting the equation $(9)$ to zero, we get:
 \begin{equation}
     \alpha^{*}=(K+\lambda I_n)^{-1}y.
 \end{equation}
+
+
+\subsection{Solving the Kernel Function, an example}
+In this paper, we study in the RKHS $\mathcal{H} = \mathcal{H}_{\omega ,\delta}$ consisting of differentiable functions $ h : [0, \infty ) \to \mathbb{R}$ of the form $h(x) = \int_{0}^{x} h'(t) dt$ with continuous derivatives, $h'(x) = h'(0) + \int_{0}^{x} h''(t)dt $ for integrable $h''$, and with finite norm 
+\begin{equation}
+\langle h, h\rangle = \parallel h \parallel_{\omega ,\delta} = (\int_{0}^{\infty} (\delta h'(x)^2 + (1 - \delta)h''(x)^2)\omega (x)dx)^{\frac{1}{2}}
+\end{equation}
+for some measurable weight function $\omega : [0, \infty) \to [1, \infty)$ and shape parameter $\delta \in (0,1)$. With additional assumption in research paper's appendix A.2, we can extend it to the case $\delta \in \{ 0, 1\}$. 
+\\ \\
+The Lemma 3 assumes that for any fixed $y \ge 0$, exists a solution $\phi$ of the linear differential equation 
+\begin{equation}
+\delta \phi \omega - (1-\delta )(\phi ' \omega)' = 1_{[0,y]}
+\end{equation}
+and for $\psi  \in \mathcal{H}_{\omega, \delta}, \psi (x) = \int_{0}^{x} \phi (t)dt$, then for $h \in \mathcal{H}_{\omega, \delta}$ with $h'(x) = 0$ for $x > n$ for some finite $n$, we can write 
+\begin{equation}
+\langle \psi , h\rangle_{\omega, \delta} = \int_{0}^{\infty} (\delta \psi '(x) h'(x) + (1-\delta )\psi '' h''(x))\omega (x)dx
+\end{equation}
+according to the definition for any $h \in \mathcal{H}_{\omega,\delta}$. The assumption of sloution exists and Lemma 4 could give us that $\langle \psi , h\rangle = h(y)$ which implies that $k(\cdot , y) = \psi$ by the reproducing property. Then  $k(x , y) = \psi (x)$, and remind that $\psi (x) = \int_{0}^{x} \phi (t)dt$, then we can find the form of $k(x,y)$ if we know the form of $\phi$, and we could solve $\phi$ by giving different value of $\delta$ and $\omega$. Below is an example of how to solve the research paper's equation 8. 
+\\ \\
+In the research paper, the weight function $\omega (x) = e^{\alpha x}$, if $\alpha = 0, \delta = 1$, then $ \phi = 1_{[0,y]}$, and $k(x,y) = \psi (x) = \int_{0}^{x} 1_{[0,y]} dt = min\{x, y\}$. 
