@@ -12,13 +12,14 @@ A normed space is a vector space $N$ on which a norm is defined. A nonnegative f
     \item $\parallel f+g \parallel \leq \parallel f \parallel + \parallel g \parallel$;
     \item $\parallel \alpha f\parallel=\mid \alpha \mid & \parallel f \parallel$
 \end{itemize}
-Now we can define a Hilbert space an inner product space that is complete and separable with respect to the norm defined by inner product.
+Now we can define a Hilbert space $\mathcal{H}$ an inner product space that is complete and separable with respect to the norm defined by inner product.
 An example of a defined norm in Hilbert space (i.e, the space $L_2$ of square integrable functions) can be 
 \begin{equation}
     \parallel f \parallel = \left(\int_a^b f^2(t)dx\right)^\frac{1}{2}.
 \end{equation}
 
-\subsection{Kernel Method}
+\subsection{Introduction to Kernel}
+\subsubsection{Feature map}
 The motivation of kernel method is simple. Imagine there are some blue dots and red dots on a vector space $\mathbb{R}^n$ and 
 we want to separate them by color. As it shows in the left hand side figure, it is difficult to divide them through a straight 
 line. However, we may be able to separate them easily by mapping each dot into a high-dimension feature space. The figure below 
@@ -27,7 +28,7 @@ shows how feature map works:
     \centering
     \includegraphics[width=0.7\textwidth]{Mapping}
 \end{figure}
-Let's now use a simple example to illustrate the idea of kernel method. 
+Let's now use a simple example to illustrate the idea of feature map. 
 we set two vectors $\textbf{x}=\begin{bmatrix}x_1&x_2\end{bmatrix}$ and $\textbf{y}=\begin{bmatrix}y_1&y_2\end{bmatrix}$ in a two-dimension space.
 Tow functions $\phi(x)$ and $\phi(y)$ are defined as:
 \begin{equation*}
@@ -40,8 +41,8 @@ Tow functions $\phi(x)$ and $\phi(y)$ are defined as:
         y_1y_1&y_1y_2&y_2y_1&y_2y_2
     \end{bmatrix}
 \end{equation*}
-We now successfully mapping them into a four-dimension feature space. 
-To write the above example in a general form, we first set an equation where $\phi(\cdot)\in\mathbb{R}^m$ and $\phi(x)$ is defined as the mapping function. Note that we assume there is a linear relation between $y$ and $\phi(x)$:
+We are now successfully mapping them into a four-dimension feature space. 
+To write the above example in a general form, we first set an equation where $\phi(\cdot)\in\mathcal{R}^m$ and $\phi(x)$ is defined as the mapping function. Note that we assume there is a linear relation between $y$ and $\phi(x)$:
 \begin{align}
     y&=\phi(x)^\top w \notag\\
      &= \begin{bmatrix}
@@ -69,23 +70,44 @@ $Y$ and $\Phi$ in generalization is defined by:
            \phi_1(x_n)&\cdots&\phi_m(x_n)
           \end{bmatrix}
 \end{align}
-Ridge
-In most of the cases, we want to avoid computing $\phi(x)$ in a explicit way, especially when $m$ is very large. Therefore, we define a kernel function:
+Recall the regularized risk minimization problem of ridge regression. In this case, it can be re-written as:
+\begin{align*}
+    w*&=\underset{m}{\operateorname{argmin}}\sum_{i=1}^n(y_i-\phi(x_i)^\top w)^2+\lambda\parallel w \parallel_2^2\\
+      &=\underset{m}{\operateorname{argmin}}\parallel Y-\Phi w\parallel_2^2+\lambda\parallel w\parallel_2^2
+\end{align*}
+The least-square solution can also be re-defined by:
 \begin{equation}
-    [\Phi\Phi^(top)]_{i,j}=\phi(x_i)^(top) \phi(x_j)=K(x_i,x_j)
+    w*=(\Phi^\top\Phi+\lambda I)^(-1)\Phi^\top Y
 \end{equation}
-$\phi(x_i)^top\phi(x_j)$ is usually very difficult to compute, and thus we use $\mathbb{K}(x_i,x_j)$ to replace. \\
+Then we replace $w*$ with $(\Phi^\top \Phi+\lambda I)^{-1}\Phi^\top$ in $y=\phi(x)^\top w$, we get:
+\begin{align}
+    y_w* (x)&=\phi(x)^\top w*\notag\\
+            &=\phi(x)^\top(\Phi^\top \Phi+\lambda I)^{-1}\Phi^\top Y\notag\\
+            &=\underbrace{\phi(x)^\top \Phi^\top}_\text{$1\times n$}(\underbrace{\Phi\Phi^\top}_\text{$n\times n$}+\lambda I)^{-1}Y\\
+            &\text{using that} (\Phi^\top \Phi+\lambda I)^{-1}\Phi^\top=\Phi^\top(\Phi\Phi^\top+\lambda I)^{-1}\notag
+\end{align}
 
-For example, the Gaussian kernel is
+
+\subsubsection{Kernel Method}
+In most of the cases, it is surprisingly difficult to know and calculate the feature function after mapping. We want to avoid computing $\phi(x)$ in a explicit way, 
+especially when $m$ is very large. Therefore, we define a kernel function:
+\begin{equation*}
+    [\Phi\Phi^\top]_{i,j}=\phi(x_i)^\top \phi(x_j)=K(x_i,x_j)
+\end{equation*}
+\begin{equation}
+    [\phi(x)^\top\Phi^\top]_j=\phi(x)^\top\phi(x_j)=K(x,x_j)
+\end{equation}
+This is simply the intuition of using the kernel method. Now we can define a function k: $\mathcal{X} \times \mathcal{X}  \rightarrow \mathbb{R}$ is a kernel if and 
+only if there exists a Hilbert space $\mathcal{H}$ and a map $\phi: \mathcal{X}\rightarrow\mathcal{H}$ such that $k(x,y)=<\phi(x),\phi(y)>$. For example, the Gaussian kernel is
 \begin{equation}
     k(x_i, x_j) = e^\frac{-\parallel x_i - x_j \parallel}{\sigma^2},
 \end{equation}
-(Gaussian kernel meaning the similarity between two points)where $\parallel x_i - x_j \parallel$ is the Euclidean distance between $x_i$ and $x_j$, and $\sigma^2 \in \mathbb{R}^+$ is the bandwidth of the kernel function, and it satisfies the 
+Gaussian kernel meaning the similarity between two points where $\parallel x_i - x_j \parallel$ is the Euclidean distance between $x_i$ and $x_j$, and $\sigma^2 \in \mathcal{R}^+$ is the bandwidth of the kernel function, and it satisfies the 
 following properties:\\
-for $k: \chi \times \chi \rightarrow \mathbb{R}$ is a kernel if
+for $k: \chi \times \chi \rightarrow \mathcal{R}$ is a kernel if
 \begin{itemize}
     \item $k$ is symmetric: $k(x,y) = k(y,x)$.
-    \item $k$ is positive semi-definite, meaning that $\sum_{i} \sum_{j} \alpha_i \alpha_j k(x_i,x_j)\geq0, \forall \alpha_i, \alpha_j \in \mathbb{R}, x \in \mathbb{R}^\mathbb{D}, D \in \mathbb{Z}^+$. 
+    \item $k$ is positive semi-definite, meaning that $\sum_{i} \sum_{j} \alpha_i \alpha_j k(x_i,x_j)\geq0, \forall \alpha_i, \alpha_j \in \mathbb{R}, x \in \mathbb{R}^\mathbb{D}, \mathbb{D} \in \mathbb{Z}^+$. 
     \item We define the corresponding kernel matrix as the matrix $K$ with entries $k_{ij}=k(x_i,x_j)$, the sencond property of $k$ is equivalent to saying that $c'Kc \geq0$.
 \end{itemize}
 Recall the simple example above, instead of computing the inner product of $<\phi(x),\phi(y)>$, we can define 
@@ -96,7 +118,50 @@ a corresponding kernel function $K(\textbf{x},\textbf{y})=<\textbf{x},\textbf{y}
                             &=x_1^2y_1^2+2x_1y_2x_2y_1+x_2^2y_2^2\\
                             &=<\phi(\textbf{x}),\phi(\textbf{y})>
 \end{align*}
-(representer theorem)
+
+\subsection{Reproducing Kernel Hilbert Space}
+Consider a Hilbert space $\mathcal{H}$ full of real-valued functions from $\mathcal{X}$ to $\mathbb{R}$, and a mapping $\Phi: \mathcal{X}\rightarrow\mathbb{R}^\chi$ defined as $x\rightarrow\Phi(x)=k_x=k(\cdot , x)$. A function $k:\mathcal{X}\times\mathcal{X}\rightarrow\mathbb{R}$ is a 
+reproducing kernel of $\mathcal{H}$, and $\mathcal{H}$ is a reproducing kernel Hilbert space, if:
+\begin{itemize}
+    \item $\forall x \in\mathcal{X}$, $k(\cdot, x)\in\mathcal{H}$,
+    \item $\forall x \in\mathcal{X}$, $f\in\mathcal{H}$, $<f(\cdot),k(\cdot,x)>_\mathcal{H}=f(x)$, which is the reproducing property.
+\end{itemize}
+To be more intuitively, a Reproducing Kernel Hilbert Space is a Hilbert space $\mathcal{H}$ with a reproducing kernel whose span is dense in $\mathcal{H}$. Equivalently, a RKHS can be defined as a Hilbert space of valid functions  with all evaluation functionals bounded and linear. 
+
+\subsection{Representer Theorem}
+In the previous section, we have learned that there is always a pair of $(\mathcal{X},k)$ as a Hilbert space or a subset of that space whenever the input domain $\mathcal{X}$ exists. Such a fact means that we are able to study the various data structures in Hilbert spaces. 
+In a practical word, however, it is extremely difficult to study many popular kernels since their Hilbert spaces is known to be infinite-dimensional in almost every case. Especially for the purpose of machine learning, we usually prefer solve an optimization problem in a finite-dimensinal space. 
+\\ \\
+This is where the representer therom useful. It contributes to simplify the regularized risk-minimization problem by reducing the infinite-dimensional space to three-dimensional vector of optimal coefficients, and provide provisions for kernels in training data in machine learning.
+\\ \\
+To illustrate the representer theroem, we first set a paired observations $(x_1,y_1),\cdots,(x_n,y_n)$ to be either classification or regression. 
+\begin{itemize}
+    \item Classification: $L_y(f(x_1),\cdots,f(x_n))=\sum_{i=1}^nPPPP_{y_if(x_i)\leq0}$
+    \item Regression: $L_y(f(x_1),\cdots,f(x_n))=\sum_{i=1}^n(y_i-f(x_i))^2$
+\end{itemize}
+In the RKHS $\mathcal{H}$, we can find the function $f^*$ satisfying:
+\begin{equation}
+    \mathcal{J}(f^*)=\underset{f\in\mathcal{H}}{min}\mathcal{J}(f),
+\end{equation}
+where 
+\begin{equation*}
+    \mathcal{J}(f)=L_y(f(x_1),\cdots,f(x_n))+\Omega(\parallel f \parallel_\mathcal{H}^2).
+\end{equation*}
+Note that $\Omega$ is non-decreasing and $y$ is a vector of $y_i$. 
+\\ \\
+The representer theorem is that the solution to $\underset{f\in\mathcal{H}}{min}[L_y(f(x_1),\cdots,f(x_n))+\Omega(\parallel f \parallel_\mathcal{H}^2)]$ can 
+be written in a simpler version, which takes the form $f^*=\sum_{i=1}^n\alpha_i k(x_i,\cdot)$. If $\Omega$ is strictly increasing, all solutions apply to this form.
+
+\subsection{Example using representer theroem--Kernel ridge regression}
+In the simplest form of machine learning, in order to predict $x$, the algorithm collects the samples in the training set $\chi$ that are similar to $x$, 
+and then take the weighted value of these samples as the predict value of $x$. Here comes the questions:
+\begin{itemize}
+    \item How to measure the similarity between samples?
+    \item How to weight the value of each sample?
+\end{itemize} 
+In general, the higher the similarity of the sample to our point of interest $x$, the more the sampling weights. To evaluate the similarity between two observations, 
+a kernel is defined as a function of two input patterns $k(x_i, x_j)$, mapping onto a real-valued output.
+\\ \\
 From the similarity-based point of view, the use of kernels for regression can be described in two stages. We set $y_i \in \mathbb{R}$ as dependent variable, 
 and $x_i$ as a $1 \times D$ vector $x_i \in \mathbb{R}^D$ of covariate values. Assume that $(y_i, x_i)$ where $i = 1, \dots, N$ is i.i.d. We first define a target function $y=f(x)$ and assume that in a space of functions, there exists 
 a function that can estimate $y=f(x)$ well. The target function could be represented by
@@ -105,7 +170,19 @@ a function that can estimate $y=f(x)$ well. The target function could be represe
 \end{equation}
 A perfect solution to estimate N parameters for N observations would be choosing $\hat{w}=K^{-1}y$. However, such a fit could result in extremely high variance. Therefore, we impose an addtional assumption 
 that a smoother curve with less oscillations is prefered. We then utilize regularization to simplify the function and satisfy the additional assumption in 
-the second stage. To achieve this purpose, Hilbert space and reproducing kernel Hilbert space will be introduced below.
-
-
-
+the second stage. 
+\\ \\
+Use features of $\phi(x_i)$ in the place of $x_i$, a ridge regression with kernel based can be defined:
+\begin{equation}
+    f^*=\underset{f\in\mathcal{H}}{argmin}\left(\sum_{i=1}^n(y_i-<f,\phi(x_i)>_\mathcal{H})^2+\lambda\parallel f\parallel_\mathcal{H}^2\right)
+\end{equation}
+According to representer theorem, the solution to such a optimization problem if we know that $f$ is a linear combination of feature space mappings of points: $f=\sum_{i=1}^n w_i \phi(x_i)$.
+We can then rewrite the kernel ridge regression as:
+\begin{align}
+    \sum_{i=1}^n(y_i-<f,\phi(x_i)>_\mathcal{H})^2+\lambda\parallel f\parallel_\mathcal{H}^2 \\
+    &=\parallel y_i-K w\parallel^2+\lambda w^\top Kw.
+\end{align}
+By differentiation and setting the above equation to zero, we get:
+\begin{equation}
+    w^*=(K+\lambda I_n)^{-1}y.
+\end{equation}
