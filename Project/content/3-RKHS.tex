@@ -113,7 +113,7 @@ only if there exists a Hilbert space $\mathcal{H}$ and a map $\phi: \mathcal{X}\
 Recall the simple example above, instead of computing the inner product of $\langle\phi(x),\phi(y)\rangle$, we can define 
 a corresponding kernel function $K(\textbf{x},\textbf{y})=\langle\textbf{x},\textbf{y}\rangle^2$. It can be easily proofed that $K(\textbf{x},\textbf{y})$ is the same as $\langle\phi(\textbf{x}),\phi(\textbf{y})\rangle$:
 \begin{align*}
-    K(\textbf{x},\textbf{y})&=<\textbf{x},\textbf{y}>^2\\
+    K(\textbf{x},\textbf{y})&=\langle\textbf{x},\textbf{y}\rangle^2\\
                             &=(x_1y_1+x_2y_2)^2\\
                             &=x_1^2y_1^2+2x_1y_2x_2y_1+x_2^2y_2^2\\
                             &=\langle\phi(\textbf{x}),\phi(\textbf{y})\rangle
@@ -132,13 +132,7 @@ To be more intuitive, a Reproducing Kernel Hilbert Space is a Hilbert space $\ma
 In the previous section, we have learned that there is always a pair of $(\mathcal{X},k)$ as a Hilbert space or a subset of that space whenever the input domain $\mathcal{X}$ exists. Such a fact means that we are able to study the various data structures in Hilbert spaces. 
 In the practical world, however, it is extremely difficult to study many popular kernels since their Hilbert spaces are known to be infinite-dimensional in almost every case. Especially for the purpose of machine learning, we usually prefer to solve an optimization problem in a finite-dimensional space. \\
 This is where the representer theorem is useful. It contributes to simplifying the regularized risk-minimization problem by reducing the infinite-dimensional space to a finite-dimensional vector of optimal coefficients and provides provisions for kernels in training data in machine learning.\\
-Suppose we are given a nonempty set $\mathcal{X}$, a positive definite real-valued kernel $k$ on $\mathcal{X}\times\mathcal{X}$, a training sample $(x_1,y_1),\dots,(x_m,y_m)\in\mathcal{X}\times\mathbb{R}$, a strictly monotonically increasing real-valued function $f$ on $[0,\infty[$.
-% \begin{itemize}
-%    \item Classification: $L_y(f(x_1),\cdots,f(x_n))=\sum_{i=1}^n \mathbb{I}_{y_i f(x_i)\leq0}$
-%     \item Regression: $L_y(f(x_1),\cdots,f(x_n))=\sum_{i=1}^n(y_i-f(x_i))^2$
-% \end{itemize}
-% (net necessary)
-As explained in \citet{scholkopf2001generalized}, we can find the function $f^{*}$ in the RKHS $\mathcal{H}$ satisfying:
+Suppose we are given a nonempty set $\mathcal{X}$, a positive definite real-valued kernel $k$ on $\mathcal{X}\times\mathcal{X}$, a training sample $(x_1,y_1),\dots,(x_m,y_m)\in\mathcal{X}\times\mathbb{R}$, a strictly monotonically increasing real-valued function $f$ on $[0,\infty[$. As explained in \citet{scholkopf2001generalized}, we can find the function $f^{*}$ in the RKHS $\mathcal{H}$ satisfying:
 \begin{equation*}
     \mathcal{J}(f^{*})=\underset{f\in\mathcal{H}}{min}\mathcal{J}(f),
 \end{equation*}
@@ -147,11 +141,6 @@ where
     \mathcal{J}(f)=L_y(f(x_1),\cdots,f(x_n))+\Omega(\parallel f \parallel_\mathcal{H}^2).
 \end{equation*}
 Note that $\Omega$ is a non-decreasing regularizer and $y$ is a vector of $y_i$. \\
-The representer theorem is that the solution to $\underset{f\in\mathcal{H}}{min}[L_y(f(x_1),\cdots,f(x_n))+\Omega(\parallel f \parallel_\mathcal{H}^2)]$ can 
-be written in a simpler version, which takes the form $f^{*}=\sum_{i=1}^n\alpha_i k(x_i,\cdot)$. If $\Omega$ is strictly increasing, all solutions apply to this form. 
-
-
-\subsection{Example Using Representer Theorem--Kernel Ridge Regression}
 In the simplest form of machine learning, in order to predict $x$, the algorithm collects the samples in the training set $\mathcal{X}$ that are similar to $x$, 
 and then takes the weighted value of these samples as the predict value of $x$. Here comes the questions:
 \begin{itemize}
@@ -159,37 +148,47 @@ and then takes the weighted value of these samples as the predict value of $x$. 
     \item How to weigh the value of each sample?
 \end{itemize} 
 In general, the higher the similarity of the sample to our point of interest $x$, the more the sampling weights. To evaluate the similarity between two observations, 
-a kernel is defined as a function of two input patterns $k(x_i, x_j)$, mapping onto a real-valued output. \citet{hofmann2008kernel} has proven that the advantage of using such a kernel as a similarity measure is that it allows us to construct algorithms in dot product spaces.\\
-The use of kernels for regression can be described in two stages. We set $y_i \in \mathbb{R}$ as dependent variable, 
-and $x_i$ as a $1 \times D$ vector $x_i \in \mathbb{R}^D$ of covariate values. Assume that $(y_i, x_i)$ where $i = 1, \dots, N$ is i.i.d. We first define a target function $y=g(x)$ and assume that in a space of functions, there exists 
-a function that can estimate $y=g(x)$ well. The target function can be represented by
-\begin{align}
-    g(\cdot)&= \langle\textbf{w},\Phi(x)\rangle\notag\\
-        &=\sum_{i=1}^N w_i k(\cdot,x_i).
-\end{align}
-We can solve this linear regression problem by least square $\underset{w\in\mathbb{R}^d}{minimize}\frac{1}{n}\sum_{i=1}^n(y_i-\langle\phi(x_i),w\rangle)^2$ in the feature space with a mapping $\phi: \mathcal{X}\rightarrow\mathbb{R}^d$. Luckily, the 
-representer theorem already tells us that the least squared problem always has a solution of the form $w^{*}=\sum_{j=1}^n\alpha_j\phi(x_j)$. We then plug it into the objective function and use the reproducing property of RKHS, and get:
-\begin{align*}
-    \underset{w\in\mathbb{R}^d}{minimize}\frac{1}{n}\sum_{i=1}^n(y_i-\langle\phi(x_i),w\rangle^2)&\Leftrightarrow\\
-                                                                                     &\underset{\alpha\in\mathbb{R}^n}{minimize}\frac{1}{n}\sum_{i=1}^n(y_i-\sum_{j=1}^n\alpha_j\langle\phi(x_i),\phi(x_j)\rangle)^2\\
-                                                                                     &\underset{\alpha\in\mathbb{R}^n}{minimize}\frac{1}{n}\sum_{i=1}^n(y_i-\sum_{j=1}^n\alpha_j k(x_i,x_j))^2\\
-                                                        \text{in matrix notation:}\\  &\underset{\alpha\in\mathbb{R}^n}{minimize}\frac{1}{n}\parallel Y-K\alpha\parallel^2
-\end{align*}\\ 
-A perfect solution to estimate N parameters for N observations would be choosing $\hat{w}=K^{-1}y$. However, such a fit could result in extremely high variance. Therefore, we impose an additional assumption 
-that a smoother curve with fewer oscillations is preferred. We then utilize regularization to simplify the function and satisfy the additional assumption by adding a penalty term $\lambda$ in 
-the second stage. \\
-Use features of $\phi(x_i)$ in the place of $x_i$, a ridge regression with kernel based can be defined:
+a kernel is defined as a function of two input patterns $k(x_i, x_j)$, mapping onto a real-valued output. \citet{hofmann2008kernel} wrote that the advantage of using such a kernel as a similarity measure is that it allows us to construct algorithms in dot product spaces.\\
+The representer theorem is that the solution to $\underset{f\in\mathcal{H}}{min}[L_y(f(x_1),\cdots,f(x_n))+\Omega(\parallel f \parallel_\mathcal{H}^2)]$ can 
+be written in a simpler version, which takes the form $f^{*}=\sum_{i=1}^n\alpha_i k(x_i,\cdot)$, where $\alpha_i$ the weighted value of each sample and $k$ is the similarity measure. If $\Omega$ is strictly increasing, all solutions apply to this form. 
+
+
+\subsection{Example Using Representer Theorem--Kernel Ridge Regression}
+Suppose we are given empirical data $(y_1,x_1),\dots,(y_n,x_n)$, where $i = 1, \dots, N$. Assume $y=g(x)$ in RKHS. We want to estimate the function $g(\cdot)$ to minimize
 \begin{equation}
-    w^{*}=\underset{w\in\mathcal{H}}{argmin}\left(\sum_{i=1}^n(y_i-\langle w,\phi(x_i)\rangle_\mathcal{H})^2+\lambda\parallel w\parallel_\mathcal{H}^2\right)
+    \underset{g\in\mathcal{H}}{min}\sum_{i=1}^N(y_i-g(x_i))^2+\Omega\parallel g\parallel_\mathcal{H}^2
 \end{equation}
+In order to avoid extremely high variance, we impose an additional assumption 
+that a smoother curve with fewer oscillations is preferred. We utilize regularization to simplify the function and satisfy the additional assumption by adding a penalty term $\Omega$. Luckily, the representer theorem already tells us that the least squared problem always has a solution of the form 
+\begin{equation}
+    g(\cdot)^{*}=\sum_{i=1}^N\alpha_i k(\cdot,x_i),
+\end{equation}
+and according to reproducing property of RKHS, we have
+\begin{equation}
+    g(x)=\langle g(\cdot), k(\cdot, x)\rangle_\mathcal{H}.
+\end{equation}
+Also, it is obvious that
+\begin{equation}
+    \parallel g \parallel^2=\langle g(\cdot),g(\cdot)\rangle.
+\end{equation}
+We then substitute $(9)$, $(10)$ for $(7)$,
+\begin{equation*}
+    \underset{g\in\mathcal{H}}{min}\sum_{i=1}^N(y_i-\langle g(\cdot),k(\cdot, x)\rangle)^2+\Omega\langle g(\cdot),g(\cdot)\rangle,
+\end{equation*}
+and plug $(8)$ in $(7)$ and get
+\begin{equation*}
+    \underset{\alpha}{min}\sum_{i=1}^N(y_i-\langle \sum_{j=1}^N\alpha_j k(\cdot, x_j),k(\cdot,x_i)\rangle)^2+\Omega\langle \sum_{i=1}^N\alpha_i k(\cdot, x_i),k(\cdot,x_j)\rangle\\
+\end{equation*}
+\begin{equation*}
+    \Rightarrow\underset{\alpha}{min}\sum_{i=1}^N(y_i-\sum_{j=1}^N\alpha_j k(x_j,x_i))^2+\Omega\sum_{i=j}^N\sum_{i=1}^N\alpha_j\alpha_i k(x_i,x_j)
+\end{equation*}
 Remember the corresponding kernel matrix as the matrix $K$ with entries $k_{ij}=k(x_i,x_j)$ is equivalent to saying that $\textbf{a}'K \textbf{a}\geq 0$, we can then rewrite the kernel ridge regression as:
-\begin{align}
-    \sum_{i=1}^n(y_i-\langle w,\phi(x_i)\rangle_\mathcal{H})^2+\lambda\parallel w\parallel_\mathcal{H}^2 \notag\\
-    &\Leftrightarrow\parallel y_i-K \alpha\parallel^2+\lambda \textbf{a}' K\textbf{a}.
-\end{align}
+\begin{equation*}
+    \parallel y_i-K \textbf{a}\parallel^2+\Omega \textbf{a}' K\textbf{a}.
+\end{equation*}
 By differentiation and setting the equation $(9)$ to zero, we get:
 \begin{equation}
-    \alpha^{*}=(K+\lambda I_n)^{-1}y.
+    \alpha^{*}=(K+\Omega I_n)^{-1}y.
 \end{equation}
 
 
