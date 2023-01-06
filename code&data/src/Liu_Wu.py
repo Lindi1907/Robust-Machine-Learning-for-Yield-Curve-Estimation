@@ -34,8 +34,8 @@ def bandwidth_h(x, ttm, N_0 = 8):
     _list = [h_l, h_r, 3]
     h = min(max(_list), 120)
     return h
-    
-def Gaussian_K(x, n, h):
+
+def _Gaussian_K(x, n, h):
     """Calculate the result of Liu Wu kernel
 
     Args:
@@ -50,13 +50,13 @@ def Gaussian_K(x, n, h):
     K = con*np.exp(-((n - x)**2)/(2*(h**2)))
     return K
     
-# def g_Liu_Wu(x, K, n = 360):
-#     neu = []
-#     for ni in range(1, n+1):
-#         tra = K*np.exp()
-#         neu.append()
+def g_Liu_Wu(x, h, n = 360):
+    neu = []
+    for ni in range(1, n+1):
+        tra = _Gaussian_K(x, ni, h)*np.exp()
+        neu.append(tra)
     
-#     return g
+    return g
 
 
 
