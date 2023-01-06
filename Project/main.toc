@@ -1,0 +1,19 @@
+\babel@toc {english}{}\relax 
+\contentsline {section}{\numberline {1}Introduction}{1}{}%
+\contentsline {subsection}{\numberline {1.1}Highlighting}{1}{}%
+\contentsline {subsection}{\numberline {1.2}Citing}{1}{}%
+\contentsline {section}{\numberline {2}Reproducing Kernel Hilbert Space}{2}{}%
+\contentsline {subsection}{\numberline {2.1}Hilbert Space}{2}{}%
+\contentsline {subsection}{\numberline {2.2}Introduction to Kernel}{2}{}%
+\contentsline {subsubsection}{\numberline {2.2.1}Feature map}{2}{}%
+\contentsline {subsubsection}{\numberline {2.2.2}Kernel Method}{4}{}%
+\contentsline {subsection}{\numberline {2.3}Reproducing Kernel Hilbert Space}{5}{}%
+\contentsline {subsection}{\numberline {2.4}Representer Theorem}{6}{}%
+\contentsline {subsection}{\numberline {2.5}Example Using Representer Theorem--Kernel Ridge Regression}{6}{}%
+\contentsline {subsection}{\numberline {2.6}Example of Solving the Kernel Function}{8}{}%
+\contentsline {section}{\numberline {3}Gaussian Process and Bayesian Perspective}{9}{}%
+\contentsline {subsection}{\numberline {3.1}Definition}{9}{}%
+\contentsline {subsection}{\numberline {3.2}Intuition behind Gaussian Process}{10}{}%
+\contentsline {subsection}{\numberline {3.3}Gaussian Process in research paper}{11}{}%
+\contentsline {section}{\numberline {4}Research Design}{12}{}%
+\contentsline {section}{\numberline {5}Conclusion}{12}{}%
