@@ -1,12 +1,16 @@
+%----------------------------------------------------------------------------------------
+% Literature review
+%----------------------------------------------------------------------------------------
+
 \section{Reproducing Kernel Hilbert Space} 
 
 \subsection{Hilbert Space}
-We can define a Hilbert space $\mathcal{H}$ an inner product space that is complete and separable with respect to the norm defined by inner product.
-An example of a defined norm in Hilbert space (i.e, the space $L_2$ of square integrable functions) can be 
+The theory of Hilbert space was initiated by David Hilbert. \citet{debnath2005introduction} provides a detailed explanation of Hilbert space $\mathcal{H}$. It is defined as an inner product space that is complete and separable with respect to the norm defined by the inner product.
+An example of a defined norm in Hilbert space (i.e, the space $L_2$ of square-integrable functions) can be 
 \begin{equation*}
     \parallel f \parallel = \left(\int_a^b f^2(t)dx\right)^\frac{1}{2}.
 \end{equation*}
-A normed space is a vector space $N$ on which a norm is defined. A nonnegative function $\parallel\cdot\parallel$ is a norm if and only if $\forall f,g\in N$ and $\alpha\in\mathbb{R}$:
+A normed space is a vector space $N$ on which a norm is defined. A non-negative function $\parallel\cdot\parallel$ is a norm if and only if $\forall f,g\in N$ and $\alpha\in\mathbb{R}$:
 \begin{itemize}
     \item $\parallel f \parallel \geq 0$ and $\parallel f\parallel=0$ iff $f=0$;
     \item $\parallel f+g \parallel \leq \parallel f \parallel + \parallel g \parallel$;
@@ -20,15 +24,16 @@ Examples of inner product $<a,b>$ in a Hilbert space are
 
 \subsection{Introduction to Kernel}
 \subsubsection{Feature map}
-The motivation of kernel method is simple. Imagine there are some blue dots and red dots on a vector space $\mathcal{R}^2$ and 
-we want to separate them by color. As it shows in the left hand side figure, it is difficult to divide them through a straight 
+The motivation of the kernel method is simple. Imagine there are some blue dots and red dots on a vector space $\mathcal{R}^2$ and 
+we want to separate them by color. As it is shown in the left-hand side figure, it is difficult to divide them through a straight 
 line. However, we may be able to separate them easily by mapping each dot into a high-dimension feature space. The figure below 
-shows how feature map works:
-\begin{figure}[H]
+shows how the feature map works:
+\begin{figure}[htpb!]
     \centering
-    \includegraphics[width=0.7\textwidth]{Mapping}
+    \includegraphics[width=0.7\textwidth]{figure/Mapping.png}
 \end{figure}
-Let's now use a simple example to illustrate the idea of feature map. 
+\\ \\
+Let's now use a simple example to illustrate the idea of a feature map. 
 we set two vectors $\textbf{x}=\begin{bmatrix}x_1&x_2\end{bmatrix}$ and $\textbf{y}=\begin{bmatrix}y_1&y_2\end{bmatrix}$ in a two-dimension space.
 Tow functions $\phi(x)$ and $\phi(y)$ are defined as:
 \begin{equation*}
@@ -67,7 +72,7 @@ $Y$ and $\Phi$ in generalization is defined by:
 \end{align}
 Recall the regularized risk minimization problem of ridge regression. In this case, it can be re-written as:
 \begin{align*}
-    w{*}&=\underset{w}{\operateorname{argmin}}\sum_{i=1}^n(y_i-\phi(x_i)^\top w)^2+\lambda\parallel w \parallel_2^2\\
+  w{*}&=\underset{w}{\operateorname{argmin}}\sum_{i=1}^n(y_i-\phi(x_i)^\top w)^2+\lambda\parallel w \parallel_2^2 \\
       &=\underset{w}{\operateorname{argmin}}\parallel Y-\Phi w\parallel_2^2+\lambda\parallel w\parallel_2^2
 \end{align*}
 The least-square solution can also be re-defined by:
@@ -84,7 +89,7 @@ Then we replace $w{*}$ with $(\Phi^\top \Phi+\lambda I)^{-1}\Phi^\top$ in $y=\ph
 
 
 \subsubsection{Kernel Method}
-In most of the cases, it is surprisingly difficult to know and calculate the feature function after mapping. We want to avoid computing $\phi(x)$ in a explicit way, 
+In most cases, it is surprisingly difficult to know and calculate the feature function after mapping. We want to avoid computing $\phi(x)$ in an explicit way, 
 especially when $m$ is very large. Therefore, we define a kernel function:
 \begin{equation*}
     [\Phi\Phi^\top]_{i,j}=\phi(x_i)^\top \phi(x_j)=K(x_i,x_j)
@@ -96,8 +101,7 @@ This is simply the intuition of using the kernel method. For example, the Gaussi
 \begin{equation*}
     k(x_i, x_j) = e^\frac{-\parallel x_i - x_j \parallel}{\sigma^2},
 \end{equation*}
-Gaussian kernel meaning the similarity between two points where $\parallel x_i - x_j \parallel$ is the Euclidean distance between $x_i$ and $x_j$, and $\sigma^2 \in \mathbb{R}^+$ is the bandwidth of the kernel function, and it satisfies the 
-following properties:\\
+Gaussian kernel meaning the similarity between two points where $\parallel x_i - x_j \parallel$ is the Euclidean distance between $x_i$ and $x_j$, and $\sigma^2 \in \mathbb{R}^+$ is the bandwidth of the kernel function. As shown in \citet{hofmann2008kernel}, it has the following properties:\\
 for $k: \mathcal{X} \times \mathcal{X} \rightarrow \mathbb{R}$ is a kernel if
 \begin{itemize}
     \item $k$ is symmetric: $k(x,y) = k(y,x)$.
@@ -105,15 +109,14 @@ for $k: \mathcal{X} \times \mathcal{X} \rightarrow \mathbb{R}$ is a kernel if
     \item We define the corresponding kernel matrix as the matrix $K$ with entries $k_{ij}=k(x_i,x_j)$, the sencond property of $k$ is equivalent to saying that $\textbf{a}'K \textbf{a}\geq 0$.
 \end{itemize}
 Now we can define a function k: $\mathcal{X} \times \mathcal{X}  \rightarrow \mathbb{R}$ is a kernel if and 
-only if there exists a Hilbert space $\mathcal{H}$ and a map $\phi: \mathcal{X}\rightarrow\mathcal{H}$ such that $k(x,y)=<\phi(x),\phi(y)>$. 
-\\ \\
-Recall the simple example above, instead of computing the inner product of $<\phi(x),\phi(y)>$, we can define 
-a corresponding kernel function $K(\textbf{x},\textbf{y})=<\textbf{x},\textbf{y}>^2$. It can be easily proofed that $K(\textbf{x},\textbf{y})$ is the same as $<\phi(\textbf{x}),\phi(\textbf{y})>$:
+only if there exists a Hilbert space $\mathcal{H}$ and a map $\phi: \mathcal{X}\rightarrow\mathcal{H}$ such that $k(x,y)=\langle\phi(x),\phi(y)\rangle$. \\
+Recall the simple example above, instead of computing the inner product of $\langle\phi(x),\phi(y)\rangle$, we can define 
+a corresponding kernel function $K(\textbf{x},\textbf{y})=\langle\textbf{x},\textbf{y}\rangle^2$. It can be easily proofed that $K(\textbf{x},\textbf{y})$ is the same as $\langle\phi(\textbf{x}),\phi(\textbf{y})\rangle$:
 \begin{align*}
     K(\textbf{x},\textbf{y})&=<\textbf{x},\textbf{y}>^2\\
                             &=(x_1y_1+x_2y_2)^2\\
                             &=x_1^2y_1^2+2x_1y_2x_2y_1+x_2^2y_2^2\\
-                            &=<\phi(\textbf{x}),\phi(\textbf{y})>
+                            &=\langle\phi(\textbf{x}),\phi(\textbf{y})\rangle
 \end{align*}
 
 \subsection{Reproducing Kernel Hilbert Space}
@@ -121,25 +124,21 @@ Consider a Hilbert space $\mathcal{H}$ full of real-valued functions from $\math
 reproducing kernel of $\mathcal{H}$, and $\mathcal{H}$ is a reproducing kernel Hilbert space, if:
 \begin{itemize}
     \item $\forall x \in\mathcal{X}$, $k(\cdot, x)\in\mathcal{H}$,
-    \item $\forall x \in\mathcal{X}$, $f\in\mathcal{H}$, $<f(\cdot),k(\cdot,x)>_\mathcal{H}=f(x)$, which is the reproducing property.
+    \item $\forall x \in\mathcal{X}$, $f\in\mathcal{H}$, $\langlef(\cdot),k(\cdot,x)\rangle_\mathcal{H}=f(x)$, which is the reproducing property.
 \end{itemize}
-To be more intuitively, a Reproducing Kernel Hilbert Space is a Hilbert space $\mathcal{H}$ with a reproducing kernel whose span is dense in $\mathcal{H}$. Equivalently, a RKHS can be defined as a Hilbert space of valid functions  with all evaluation functionals bounded and linear. 
+To be more intuitive, a Reproducing Kernel Hilbert Space is a Hilbert space $\mathcal{H}$ with a reproducing kernel whose span is dense in $\mathcal{H}$. Equivalently, an RKHS can be defined as a Hilbert space of valid functions with all evaluation functionals bounded and linear. 
 
 \subsection{Representer Theorem}
 In the previous section, we have learned that there is always a pair of $(\mathcal{X},k)$ as a Hilbert space or a subset of that space whenever the input domain $\mathcal{X}$ exists. Such a fact means that we are able to study the various data structures in Hilbert spaces. 
-In practical world, however, it is extremely difficult to study many popular kernels since their Hilbert spaces is known to be infinite-dimensional in almost every case. Especially for the purpose of machine learning, we usually prefer solve an optimization problem in a finite-dimensinal space. 
-\\ \\
-This is where the representer therom useful. It contributes to simplify the regularized risk-minimization problem by reducing the infinite-dimensional space to finite-dimensional vector of optimal coefficients, and provide provisions for kernels in training data in machine learning.
-\\ \\
-(not neccessary)To illustrate the representer theroem, we first set a paired observations $(x_1,y_1),\cdots,(x_n,y_n)$ to be either classification or regression Loss function. 
-\begin{itemize}
-    \item Classification: $L_y(f(x_1),\cdots,f(x_n))=\sum_{i=1}^n \mathbb{I}_{y_i f(x_i)\leq0}$
-    \item Regression: $L_y(f(x_1),\cdots,f(x_n))=\sum_{i=1}^n(y_i-f(x_i))^2$
-\end{itemize}
-(net neccessary)
-\\ \\
-With assumptions here!!!!
-In the RKHS $\mathcal{H}$, we can find the function $f^{*}$ satisfying:
+In the practical world, however, it is extremely difficult to study many popular kernels since their Hilbert spaces are known to be infinite-dimensional in almost every case. Especially for the purpose of machine learning, we usually prefer to solve an optimization problem in a finite-dimensional space. \\
+This is where the representer theorem is useful. It contributes to simplifying the regularized risk-minimization problem by reducing the infinite-dimensional space to a finite-dimensional vector of optimal coefficients and provides provisions for kernels in training data in machine learning.\\
+Suppose we are given a nonempty set $\mathcal{X}$, a positive definite real-valued kernel $k$ on $\mathcal{X}\times\mathcal{X}$, a training sample $(x_1,y_1),\dots,(x_m,y_m)\in\mathcal{X}\times\mathbb{R}$, a strictly monotonically increasing real-valued function $f$ on $[0,\infty[$.
+% \begin{itemize}
+%    \item Classification: $L_y(f(x_1),\cdots,f(x_n))=\sum_{i=1}^n \mathbb{I}_{y_i f(x_i)\leq0}$
+%     \item Regression: $L_y(f(x_1),\cdots,f(x_n))=\sum_{i=1}^n(y_i-f(x_i))^2$
+% \end{itemize}
+% (net necessary)
+As explained in \citet{scholkopf2001generalized}, we can find the function $f^{*}$ in the RKHS $\mathcal{H}$ satisfying:
 \begin{equation*}
     \mathcal{J}(f^{*})=\underset{f\in\mathcal{H}}{min}\mathcal{J}(f),
 \end{equation*}
@@ -147,49 +146,45 @@ where
 \begin{equation*}
     \mathcal{J}(f)=L_y(f(x_1),\cdots,f(x_n))+\Omega(\parallel f \parallel_\mathcal{H}^2).
 \end{equation*}
-Note that $\Omega$ is non-decreasing regularizer and $y$ is a vector of $y_i$. 
-\\ \\
+Note that $\Omega$ is a non-decreasing regularizer and $y$ is a vector of $y_i$. \\
 The representer theorem is that the solution to $\underset{f\in\mathcal{H}}{min}[L_y(f(x_1),\cdots,f(x_n))+\Omega(\parallel f \parallel_\mathcal{H}^2)]$ can 
 be written in a simpler version, which takes the form $f^{*}=\sum_{i=1}^n\alpha_i k(x_i,\cdot)$. If $\Omega$ is strictly increasing, all solutions apply to this form. 
 
 
-\subsection{Example using representer theroem--Kernel ridge regression}
+\subsection{Example Using Representer Theorem--Kernel Ridge Regression}
 In the simplest form of machine learning, in order to predict $x$, the algorithm collects the samples in the training set $\mathcal{X}$ that are similar to $x$, 
-and then take the weighted value of these samples as the predict value of $x$. Here comes the questions:
+and then takes the weighted value of these samples as the predict value of $x$. Here comes the questions:
 \begin{itemize}
     \item How to measure the similarity between samples?
-    \item How to weight the value of each sample?
+    \item How to weigh the value of each sample?
 \end{itemize} 
 In general, the higher the similarity of the sample to our point of interest $x$, the more the sampling weights. To evaluate the similarity between two observations, 
-a kernel is defined as a function of two input patterns $k(x_i, x_j)$, mapping onto a real-valued output.
-\\ \\
-From the similarity-based point of view, the use of kernels for regression can be described in two stages. We set $y_i \in \mathbb{R}$ as dependent variable, 
+a kernel is defined as a function of two input patterns $k(x_i, x_j)$, mapping onto a real-valued output. \citet{hofmann2008kernel} has proven that the advantage of using such a kernel as a similarity measure is that it allows us to construct algorithms in dot product spaces.\\
+The use of kernels for regression can be described in two stages. We set $y_i \in \mathbb{R}$ as dependent variable, 
 and $x_i$ as a $1 \times D$ vector $x_i \in \mathbb{R}^D$ of covariate values. Assume that $(y_i, x_i)$ where $i = 1, \dots, N$ is i.i.d. We first define a target function $y=g(x)$ and assume that in a space of functions, there exists 
 a function that can estimate $y=g(x)$ well. The target function can be represented by
 \begin{align}
-    g(x)&= <\textbf{w},\Phi(x)>\notag\\
+    g(\cdot)&= \langle\textbf{w},\Phi(x)\rangle\notag\\
         &=\sum_{i=1}^N w_i k(\cdot,x_i).
 \end{align}
-We can solve this linear regression problem by least square $\underset{w\in\mathbb{R}^d}{minimize}\frac{1}{n}\sum_{i=1}^n(y_i-<\phi(x_i),w>^)2$ in the feature space with a mapping $\phi: \mathcal{X}\rightarrow\mathbb{R}^d$. Luckily, the 
-representer theorem already tells us that the least squared problem always has a solution of the form $w^{*}=\sum_{j=1}^n\alpha_j\phi(x_j)$. We them plug it into the objective function and use the repreducing property of RKHS, and get:
+We can solve this linear regression problem by least square $\underset{w\in\mathbb{R}^d}{minimize}\frac{1}{n}\sum_{i=1}^n(y_i-\langle\phi(x_i),w\rangle)^2$ in the feature space with a mapping $\phi: \mathcal{X}\rightarrow\mathbb{R}^d$. Luckily, the 
+representer theorem already tells us that the least squared problem always has a solution of the form $w^{*}=\sum_{j=1}^n\alpha_j\phi(x_j)$. We then plug it into the objective function and use the reproducing property of RKHS, and get:
 \begin{align*}
-    \underset{w\in\mathbb{R}^d}{minimize}\frac{1}{n}\sum_{i=1}^n(y_i-<\phi(x_i),w>^2)&\Leftrightarrow\\
-                                                                                     &\underset{\alpha\in\mathbb{R}^n}{minimize}\frac{1}{n}\sum_{i=1}^n(y_i-\sum_{j=1}^n\alpha_j<\phi(x_i),\phi(x_j)>)^2\\
+    \underset{w\in\mathbb{R}^d}{minimize}\frac{1}{n}\sum_{i=1}^n(y_i-\langle\phi(x_i),w\rangle^2)&\Leftrightarrow\\
+                                                                                     &\underset{\alpha\in\mathbb{R}^n}{minimize}\frac{1}{n}\sum_{i=1}^n(y_i-\sum_{j=1}^n\alpha_j\langle\phi(x_i),\phi(x_j)\rangle)^2\\
                                                                                      &\underset{\alpha\in\mathbb{R}^n}{minimize}\frac{1}{n}\sum_{i=1}^n(y_i-\sum_{j=1}^n\alpha_j k(x_i,x_j))^2\\
-                                                        \text{in matrix notation:}  &\underset{\alpha\in\mathbb{R}^n}{minimize}\frac{1}{n}\parallel Y-K\alpha\parallel^2
-\end{align*}
-\\ \\
-A perfect solution to estimate N parameters for N observations would be choosing $\hat{w}=K^{-1}y$. However, such a fit could result in extremely high variance. Therefore, we impose an addtional assumption 
-that a smoother curve with less oscillations is prefered. We then utilize regularization to simplify the function and satisfy the additional assumption by adding a penalty term $\lambda$ in 
-the second stage. 
-\\ \\
+                                                        \text{in matrix notation:}\\  &\underset{\alpha\in\mathbb{R}^n}{minimize}\frac{1}{n}\parallel Y-K\alpha\parallel^2
+\end{align*}\\ 
+A perfect solution to estimate N parameters for N observations would be choosing $\hat{w}=K^{-1}y$. However, such a fit could result in extremely high variance. Therefore, we impose an additional assumption 
+that a smoother curve with fewer oscillations is preferred. We then utilize regularization to simplify the function and satisfy the additional assumption by adding a penalty term $\lambda$ in 
+the second stage. \\
 Use features of $\phi(x_i)$ in the place of $x_i$, a ridge regression with kernel based can be defined:
 \begin{equation}
-    w^*=\underset{w\in\mathcal{H}}{argmin}\left(\sum_{i=1}^n(y_i-<w,\phi(x_i)>_\mathcal{H})^2+\lambda\parallel w\parallel_\mathcal{H}^2\right)
+    w^{*}=\underset{w\in\mathcal{H}}{argmin}\left(\sum_{i=1}^n(y_i-\langle w,\phi(x_i)\rangle_\mathcal{H})^2+\lambda\parallel w\parallel_\mathcal{H}^2\right)
 \end{equation}
 Remember the corresponding kernel matrix as the matrix $K$ with entries $k_{ij}=k(x_i,x_j)$ is equivalent to saying that $\textbf{a}'K \textbf{a}\geq 0$, we can then rewrite the kernel ridge regression as:
 \begin{align}
-    \sum_{i=1}^n(y_i-<w,\phi(x_i)>_\mathcal{H})^2+\lambda\parallel w\parallel_\mathcal{H}^2 \notag\\
+    \sum_{i=1}^n(y_i-\langle w,\phi(x_i)\rangle_\mathcal{H})^2+\lambda\parallel w\parallel_\mathcal{H}^2 \notag\\
     &\Leftrightarrow\parallel y_i-K \alpha\parallel^2+\lambda \textbf{a}' K\textbf{a}.
 \end{align}
 By differentiation and setting the equation $(9)$ to zero, we get:
@@ -198,13 +193,12 @@ By differentiation and setting the equation $(9)$ to zero, we get:
 \end{equation}
 
 
-\subsection{Solving the Kernel Function, an example}
+\subsection{Example of Solving the Kernel Function}
 In this paper, we study in the RKHS $\mathcal{H} = \mathcal{H}_{\omega ,\delta}$ consisting of differentiable functions $ h : [0, \infty ) \to \mathbb{R}$ of the form $h(x) = \int_{0}^{x} h'(t) dt$ with continuous derivatives, $h'(x) = h'(0) + \int_{0}^{x} h''(t)dt $ for integrable $h''$, and with finite norm 
 \begin{equation}
 \langle h, h\rangle = \parallel h \parallel_{\omega ,\delta} = (\int_{0}^{\infty} (\delta h'(x)^2 + (1 - \delta)h''(x)^2)\omega (x)dx)^{\frac{1}{2}}
 \end{equation}
-for some measurable weight function $\omega : [0, \infty) \to [1, \infty)$ and shape parameter $\delta \in (0,1)$. With additional assumption in research paper's appendix A.2, we can extend it to the case $\delta \in \{ 0, 1\}$. 
-\\ \\
+for some measurable weight function $\omega : [0, \infty) \to [1, \infty)$ and shape parameter $\delta \in (0,1)$. With additional assumption in the research paper's appendix A.2, we can extend it to the case $\delta \in \{ 0, 1\}$. \\
 The Lemma 3 assumes that for any fixed $y \ge 0$, exists a solution $\phi$ of the linear differential equation 
 \begin{equation}
 \delta \phi \omega - (1-\delta )(\phi ' \omega)' = 1_{[0,y]}
@@ -213,6 +207,5 @@ and for $\psi  \in \mathcal{H}_{\omega, \delta}, \psi (x) = \int_{0}^{x} \phi (t
 \begin{equation}
 \langle \psi , h\rangle_{\omega, \delta} = \int_{0}^{\infty} (\delta \psi '(x) h'(x) + (1-\delta )\psi '' h''(x))\omega (x)dx
 \end{equation}
-according to the definition for any $h \in \mathcal{H}_{\omega,\delta}$. The assumption of sloution exists and Lemma 4 could give us that $\langle \psi , h\rangle = h(y)$ which implies that $k(\cdot , y) = \psi$ by the reproducing property. Then  $k(x , y) = \psi (x)$, and remind that $\psi (x) = \int_{0}^{x} \phi (t)dt$, then we can find the form of $k(x,y)$ if we know the form of $\phi$, and we could solve $\phi$ by giving different value of $\delta$ and $\omega$. Below is an example of how to solve the research paper's equation 8. 
-\\ \\
+according to the definition for any $h \in \mathcal{H}_{\omega,\delta}$. The assumption of sloution exists and Lemma 4 could give us that $\langle \psi , h\rangle = h(y)$ which implies that $k(\cdot , y) = \psi$ by the reproducing property. Then  $k(x , y) = \psi (x)$, and remind that $\psi (x) = \int_{0}^{x} \phi (t)dt$, then we can find the form of $k(x,y)$ if we know the form of $\phi$, and we could solve $\phi$ by giving different value of $\delta$ and $\omega$. Below is an example of how to solve the research paper's equation 8. \\
 In the research paper, the weight function $\omega (x) = e^{\alpha x}$, if $\alpha = 0, \delta = 1$, then $ \phi = 1_{[0,y]}$, and $k(x,y) = \psi (x) = \int_{0}^{x} 1_{[0,y]} dt = min\{x, y\}$. 
