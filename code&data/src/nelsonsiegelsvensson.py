@@ -79,3 +79,28 @@ def convert_y_to_g(y, x):
     g = 1/(np.exp(x*y))
     return g
     
+def NSSMinimize2(beta0, beta1, beta2, beta3, lambda0, lambda1, TimeVec, YieldVec):
+    # NSSMinimize uses the built in minimize function from the python's scipy package. The function sets up the parameters and the function NSSGoodFit as to make it
+    # compatible with the way minimize requires its arguments. If the optimization does not converge, the output is an empty array.  
+    #
+    # Arguments:
+    #    beta0 =   1 x 1 floating number, representing the first factor of the NSS parametrisation  
+    #    beta1 =   1 x 1 floating number, representing the second factor of the NSS parametrisation 
+    #    beta2 =   1 x 1 floating number, representing the third factor of the NSS parametrisation
+    #    beta3 =   1 x 1 floating number, representing the fourth factor of the NSS parametrisation
+    #    lambda0 = 1 x 1 floating number, representing the first shape parameter lambda of the NSS parametrisation
+    #    lambda1 = 1 x 1 floating number, representing the second shape parameter lambda of the NSS parametrisation 
+    #    TimeVec =  n x 1 ndarray of maturities for which the yields in YieldVec were observed
+    #    YieldVec = n x 1 ndarray of observed yields 
+    # 
+    # Returns:
+    #     6 x 1 array of parameters and factors, that best fit the observed yields(Or an empty array if the optimization was not successfull).
+    #
+    # LINK TO SOURCE
+
+
+    opt_sol = minimize(NSSGoodFit, x0=np.array([beta0, beta1, beta2, beta3, lambda0, lambda1]), args = (TimeVec, YieldVec), method="SLSQP")
+    if (opt_sol.success):
+        return opt_sol.x
+    else:
+        return []
